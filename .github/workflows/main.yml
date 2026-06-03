@@ -18,6 +18,6 @@ jobs:
       - name: Verify deployment
         run: |
           cd backend-docker 
-          pm2 start index.js
+          pm2 restart index.js
         
 
