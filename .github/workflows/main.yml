@@ -1,25 +1,23 @@
-name: CI-CD Docker Backend
+name: Deploy to Server
 
 on:
   push:
-    branches: [ main ]
+    branches:
+      - main
 
 jobs:
-  build-and-push:
-    runs-on: ubuntu-latest
+  deploy:
+    runs-on: self-hosted
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
+      - name: Clean existing files
+        run: |
+          sudo rm -rf /var/www/html/*
 
-    - name: Docker login
-      uses: docker/login-action@v3
-      with:
-        username: ncd28
-        password: Nency@282005
+      - name: Clone repository to web root
+        run: |
+          sudo git clone https://github.com/ncd282005/backend-docker.git /var/www/html
 
-    - name: Build Docker image
-      run: docker build -t ncd28/backend-docker-app:v1 .
-
-    - name: Push Docker image
-      run: docker push ncd28/backend-docker-app:v1
+      - name: Verify deployment
+        run: |
+          ls -la /var/www/html
