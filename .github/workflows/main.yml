@@ -1,0 +1,22 @@
+name: Deploy to Server
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: self-hosted
+
+    steps:
+      - name: Clone repository to web root
+        run: |
+          cd /var/www/html/
+          sudo rm -rf *
+          sudo git clone https://github.com/ncd282005/backend-docker.git 
+      - name: Verify deployment
+        run: |
+          cd backend-docker 
+          sudo npm install express
+          pm2 restart index.js
